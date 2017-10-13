@@ -14,6 +14,7 @@ $ echo '{"privateKey":{"crv":"P-256","d":"xfud757LZVtHzgPvpp-pHkOJdTeGcCXyzvQCRO
 
 ```
 {
+  "_zeo_item": true,
   "asset": "ITEM.WOOD",
   "quantity": 10,
   "owner": "noob",

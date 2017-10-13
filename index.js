@@ -43,6 +43,7 @@ process.stdin.on('end', () => {
   _importKey(j)
     .then(({publicKey, privateKey}) => {
       const assetSpec = {
+        _zeo_item: true,
         asset,
         quantity,
         owner: vrid,
