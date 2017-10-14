@@ -42,7 +42,7 @@ program
           _zeo_item: true,
           asset,
           quantity: 1,
-          nonce: crypto.randomBytes(32).toString('hex'),
+          nonce: crypto.randomBytes(32).toString('base64'),
           timestamp,
         };
         if (program.data) {
