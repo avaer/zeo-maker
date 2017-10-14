@@ -1,14 +1,16 @@
-const WebCrypto = require('node-webcrypto-ossl');
-const crypto = new WebCrypto();
+const crypto = require('crypto');
+
+const program = require('commander');
+const cryptoSubtle = (new (require('node-webcrypto-ossl'))).subtle;
 
 function _importPublicKey(publicKey) {
-  return crypto.subtle.importKey('jwk', publicKey, {
+  return cryptoSubtle.importKey('jwk', publicKey, {
     name:'ECDSA',
     namedCurve: 'P-256',
   }, true, ['verify']);
 }
 function _importPrivateKey(privateKey) {
-  return crypto.subtle.importKey('jwk', privateKey, {
+  return cryptoSubtle.importKey('jwk', privateKey, {
     name:'ECDSA',
     namedCurve: 'P-256',
   }, true, ['sign']);
@@ -27,50 +29,46 @@ function _importKey(key) {
     }));
 }
 
-const asset = process.argv[2];
-const quantity = parseInt(process.argv[3], 10);
-const vrid = process.argv[4];
+program
+  .version('0.0.1')
+  .option('-d, --data <json>', 'Json data')
+  .arguments('<asset> <cert>')
+  .action((asset, cert) => {
+    const j = JSON.parse(cert);
+    const timestamp = Date.now();
+    _importKey(j)
+      .then(({publicKey, privateKey}) => {
+        const assetSpec = {
+          _zeo_item: true,
+          asset,
+          quantity: 1,
+          nonce: crypto.randomBytes(32).toString('hex'),
+          timestamp,
+        };
+        if (program.data) {
+          assetSpec.json = JSON.parse(program.data);
+        }
 
-const bs = [];
-process.stdin.on('data', d => {
-  bs.push(d);
-});
-process.stdin.on('end', () => {
-  const b = Buffer.concat(bs);
-  const s = b.toString('utf8');
-  const j = JSON.parse(s);
-  const timestamp = Date.now();
-  _importKey(j)
-    .then(({publicKey, privateKey}) => {
-      const assetSpec = {
-        _zeo_item: true,
-        asset,
-        quantity,
-        owner: vrid,
-        timestamp,
-      };
+        return cryptoSubtle.sign({
+          name: 'ECDSA',
+          hash: {
+            name: 'SHA-256',
+          },
+        }, privateKey, new Buffer(JSON.stringify(assetSpec), 'utf8'))
+          .then(signature => new Buffer(signature, 'utf8').toString('base64'))
+          .then(signature => {
+            assetSpec.certificate = [
+              {
+                publicKey,
+                signature,
+              },
+            ];
 
-      crypto.subtle.sign({
-        name: 'ECDSA',
-        hash: {
-          name: 'SHA-256',
-        },
-      }, privateKey, new Buffer(JSON.stringify(assetSpec), 'utf8'))
-        .then(signature => new Buffer(signature, 'utf8').toString('base64'))
-        .then(signature => {
-          assetSpec.certificate = [
-            {
-              vrid,
-              publicKey,
-              timestamp,
-              signature,
-            },
-          ];
-
-          process.stdout.write(JSON.stringify(assetSpec, null, 2));
-        })
-        .catch(err => {
-          console.warn(err);
-        });
-    });
-});
+            process.stdout.write(JSON.stringify(assetSpec, null, 2));
+          });
+      })
+      .catch(err => {
+        console.warn(err);
+      });
+  })
+  .parse(process.argv);
