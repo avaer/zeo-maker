@@ -1,3 +1,4 @@
+const fs = require('fs');
 const crypto = require('crypto');
 
 const program = require('commander');
@@ -28,10 +29,25 @@ function _importKey(key) {
       privateKey,
     }));
 }
+function _readFile(p, opts) {
+  return new Promise((accept, reject) => {
+    fs.readFile(p, opts, (err, data) => {
+      if (!err) {
+        accept(data);
+      } else {
+        reject(err);
+      }
+    });
+  });
+}
+function _makeId() {
+  return Math.random().toString(36).substring(7);
+}
 
 program
   .version('0.0.1')
   .option('-d, --data <json>', 'Json data')
+  .option('-s, --skin <img-file>', 'Skin data')
   .arguments('<asset> <cert>')
   .action((asset, cert) => {
     const j = JSON.parse(cert);
@@ -45,11 +61,8 @@ program
           nonce: crypto.randomBytes(32).toString('base64'),
           timestamp,
         };
-        if (program.data) {
-          assetSpec.json = JSON.parse(program.data);
-        }
 
-        return cryptoSubtle.sign({
+        const _continue = assetSpec => cryptoSubtle.sign({
           name: 'ECDSA',
           hash: {
             name: 'SHA-256',
@@ -66,6 +79,24 @@ program
 
             process.stdout.write(JSON.stringify(assetSpec, null, 2));
           });
+
+        if (program.data) {
+          assetSpec.json = JSON.parse(program.data);
+          return _continue(assetSpec);
+        } else if (program.skin) {
+          return _readFile(program.skin, 'base64')
+            .then(data => {
+              const basename = program.skin.replace(/\.[^.]*$/, '');
+
+              assetSpec.json = {
+                name: basename,
+                data: data,
+              };
+              return _continue(assetSpec);
+            });
+        } else {
+          return _continue(assetSpec);
+        }
       })
       .catch(err => {
         console.warn(err);
