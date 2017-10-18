@@ -63,9 +63,9 @@ program
 
             const assetSpec = {
               _zeo_item: true,
+              id: crypto.randomBytes(32).toString('base64'),
               asset,
               quantity,
-              nonce: crypto.randomBytes(32).toString('base64'),
               timestamp,
             };
 

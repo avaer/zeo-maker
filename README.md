@@ -29,13 +29,12 @@ $ zeo-maker ITEM.WOOD keys.json >wood.json
 $ cat wood.json
 {
   "_zeo_item": true,
+  "id": "uHnk7nAnNiFh3Xseqlh3R0PVtYCTcnMpX4tSDeGMWHA=",
   "asset": "ITEM.WOOD",
-  "quantity": 10,
-  "owner": "noob",
-  "timestamp": 1507903177313,
+  "quantity": 100,
+  "timestamp": 1508365936705,
   "certificate": [
     {
-      "vrid": "noob",
       "publicKey": {
         "usages": [
           "verify"
@@ -50,8 +49,7 @@ $ cat wood.json
         },
         "type": "public"
       },
-      "timestamp": 1507903177313,
-      "signature": "+ZDRmH3I7fbdnlgkTbHGO/lgSRx7LevqLc9JYGXxoJrvtoNGHe6u6GYKxJVL0bGabH/eK/kYdvFW1HulQwhokg=="
+      "signature": "5zNosfy3AnVB7mgjoMfU0OHvl+PMipY0Y1NAujiu2aUufW86hFn8TfIX2WkssWDBd+ItlakY2zw8iYIyB2bjYw=="
     }
   ]
 }
@@ -66,13 +64,16 @@ $ zeo-maker ITEM.SKIN keys.json -s skin.png >skin.json
 $ cat skin.json
 {
   "_zeo_item": true,
-  "asset": "ITEM.WOOD",
-  "quantity": 10,
-  "owner": "noob",
-  "timestamp": 1507903177313,
+  "id": "0B1/UEAPnEvr/CHoeO9IuoQsxnZSXg8pHrblPISPCCE=",
+  "asset": "ITEM.SKIN",
+  "quantity": 1,
+  "timestamp": 1508365958337,
+  "json": {
+    "name": "skin",
+    "data": "iVBORw0KGgoAAAANSUhEUgAAAEAAAABACAYAAACqaXHeAAADXElEQVR4Xu1aPWzTQBT+LrFjO4AYaAWyVPEXZWGAqSCFCQRiQKwwMTKyMkaZ2BlB3WFkQuwEiU5dWCKhYimKWqX8SRCnqZNDz3ZKm6YKzvmii3MnRYqj3Hf3vve9+3nPDAve2ILbD02AVsCCM6BDYMEFoBdB5UOgXC7zbreLYrEI3/dhmiboOZfLYTAYoNlsCtkg1HkW4VMqlUICtpvNcLhl14XjOAiCIHz2PE/IBqHOsyDAdV3ebrXQ26gdGu78gzXYto1GoyFkg1DnWRBgApyMf/SkitcvIxKG31fuv8p+CBSLRf7n47OxXDs3ntN6IOREoc6zUADfqHEa5+1aDZttwC4Al5aAu4+r4fDsWlXIBqHOsyTguLEyT0DnFPgOA1ZyAOjDAT/aAOAYAPshdpZRXgGyVaYJkM2w6vhaAap7SPb8tAJkM6w6vlaA6h6SPT+tANkMq46vFaC6h2TPTytANsOq42sFqO4h2fPTCpDNsOr4WgGjHqpUKmEamtqHp5tgD1uJSNo7TWlLwOjHIAYQ7CMC5i+xJCZ3wdd3I+yTDLiyI4Z3xDjHcTgVHfP5PDqdDo0zFQEhCTkgGPyj2MgD7HsyvFEHfV0G/9IHKiawNQAutMXwjhhn2zbnnIfVV2q+709NwLj4T0MB3h6wPQBWTYBtSSBgqAAqR4soYJQAgwHsp9iEP50B/82BW3aEzlpieMeGwO5uHGgiIZAHgngtIONpqqKFjLBUdq8Krx+p4Pq3lAmwLIuT/GPvp6oAAhMOgbhWuH67KicEqBrb7/eRhgKkrAExAYTt3anKWQQJnN7KiJtai+ABAkJ5pl0dLhQKnLZA1UNg3ztpE0D1V8uy5iIEpCggKkAfaosVAmkRQKdAovLgMTjNXUBmCIxbvDP7WyJ5Z5EFTUAWvZrEpiMK4G9cfvPFxX2Mer0+VyrpngWv7wHncsAJNvm6PM648BxA9wE6Evd6vbkiYJgwWS0AXjAFAcOECN0F6KXkpPmAJPKT8d/PS+DkeUqaUMZo0m1xrAJEDkIyjEqCOcwYXc5HvSZljDJHAK0BFhlP59l3tYmXpcwRQBmjqwZgvY/eLJ90W8wcAaECYuMXkoDh2+X/e1fInAI0AQkzRloBY/ZYoYRIkj1bxn+ThsBfAfBPUAvkqSIAAAAASUVORK5CYII="
+  },
   "certificate": [
     {
-      "vrid": "noob",
       "publicKey": {
         "usages": [
           "verify"
@@ -87,8 +88,7 @@ $ cat skin.json
         },
         "type": "public"
       },
-      "timestamp": 1507903177313,
-      "signature": "+ZDRmH3I7fbdnlgkTbHGO/lgSRx7LevqLc9JYGXxoJrvtoNGHe6u6GYKxJVL0bGabH/eK/kYdvFW1HulQwhokg=="
+      "signature": "M4731UmhrbYfqlOzZFs3BH6VJhUL7o5EVXctJ/Th8bjwkkWuZLCJrVWP/qFGYaeIWehUlRTlPnvCAHZcjHp7Yw=="
     }
   ]
 }
