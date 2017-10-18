@@ -60,7 +60,7 @@ $ cat wood.json
 #### Example: skin
 
 ```
-$ cat skin.png
+$ file skin.png
 skin.png: PNG image data, 64 x 64, 8-bit/color RGBA, non-interlaced
 $ zeo-maker ITEM.SKIN keys.json -s skin.png >skin.json
 $ cat skin.json
