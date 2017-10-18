@@ -11,7 +11,7 @@ $ npm i -g zeo-maker
 #### Usage
 
 ```
-$ zeo-maker <assetName> <keysJsonFile> [-d <data>] [-s <skinImgFile>]
+$ zeo-maker <assetName> <keysJsonFile> [-d <data>] [-s <skinImgFile>] [-q <quantity>]
 ```
 
 #### How it works

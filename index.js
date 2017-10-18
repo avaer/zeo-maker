@@ -47,6 +47,7 @@ program
   .version('0.0.1')
   .option('-d, --data <json>', 'Json data')
   .option('-s, --skin <img-file>', 'Skin data')
+  .option('-q, --quantity <number>', 'Item quantity')
   .arguments('<asset> <keysJsonFile>')
   .action((asset, keysJsonFile) => {
     _readFile(keysJsonFile, 'utf8')
@@ -55,10 +56,15 @@ program
         const timestamp = Date.now();
         _importKey(j)
           .then(({publicKey, privateKey}) => {
+            let quantity = parseInt(program.quantity);
+            if (!(quantity > 0)) {
+              quantity = 1;
+            }
+
             const assetSpec = {
               _zeo_item: true,
               asset,
-              quantity: 1,
+              quantity,
               nonce: crypto.randomBytes(32).toString('base64'),
               timestamp,
             };
