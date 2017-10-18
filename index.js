@@ -40,66 +40,66 @@ function _readFile(p, opts) {
     });
   });
 }
-function _makeId() {
-  return Math.random().toString(36).substring(7);
-}
 
 program
   .version('0.0.1')
   .option('-d, --data <json>', 'Json data')
   .option('-s, --skin <img-file>', 'Skin data')
-  .arguments('<asset> <cert>')
-  .action((asset, cert) => {
-    const j = JSON.parse(cert);
-    const timestamp = Date.now();
-    _importKey(j)
-      .then(({publicKey, privateKey}) => {
-        const assetSpec = {
-          _zeo_item: true,
-          asset,
-          quantity: 1,
-          nonce: crypto.randomBytes(32).toString('base64'),
-          timestamp,
-        };
+  .arguments('<asset> <keysJsonFile>')
+  .action((asset, keysJsonFile) => {
+    _readFile(keysJsonFile, 'utf8')
+      .then(keysJsonFileString => {
+        const j = JSON.parse(keysJsonFileString);
+        const timestamp = Date.now();
+        _importKey(j)
+          .then(({publicKey, privateKey}) => {
+            const assetSpec = {
+              _zeo_item: true,
+              asset,
+              quantity: 1,
+              nonce: crypto.randomBytes(32).toString('base64'),
+              timestamp,
+            };
 
-        const _continue = assetSpec => cryptoSubtle.sign({
-          name: 'ECDSA',
-          hash: {
-            name: 'SHA-256',
-          },
-        }, privateKey, new Buffer(JSON.stringify(assetSpec), 'utf8'))
-          .then(signature => new Buffer(signature, 'utf8').toString('base64'))
-          .then(signature => {
-            assetSpec.certificate = [
-              {
-                publicKey,
-                signature,
+            const _continue = assetSpec => cryptoSubtle.sign({
+              name: 'ECDSA',
+              hash: {
+                name: 'SHA-256',
               },
-            ];
+            }, privateKey, new Buffer(JSON.stringify(assetSpec), 'utf8'))
+              .then(signature => new Buffer(signature, 'utf8').toString('base64'))
+              .then(signature => {
+                assetSpec.certificate = [
+                  {
+                    publicKey,
+                    signature,
+                  },
+                ];
 
-            process.stdout.write(JSON.stringify(assetSpec, null, 2));
-          });
+                process.stdout.write(JSON.stringify(assetSpec, null, 2));
+              });
 
-        if (program.data) {
-          assetSpec.json = JSON.parse(program.data);
-          return _continue(assetSpec);
-        } else if (program.skin) {
-          return _readFile(program.skin, 'base64')
-            .then(data => {
-              const basename = program.skin.replace(/\.[^.]*$/, '');
-
-              assetSpec.json = {
-                name: basename,
-                data: data,
-              };
+            if (program.data) {
+              assetSpec.json = JSON.parse(program.data);
               return _continue(assetSpec);
-            });
-        } else {
-          return _continue(assetSpec);
-        }
-      })
-      .catch(err => {
-        console.warn(err);
+            } else if (program.skin) {
+              return _readFile(program.skin, 'base64')
+                .then(data => {
+                  const basename = program.skin.replace(/\.[^.]*$/, '');
+
+                  assetSpec.json = {
+                    name: basename,
+                    data: data,
+                  };
+                  return _continue(assetSpec);
+                });
+            } else {
+              return _continue(assetSpec);
+            }
+          })
+          .catch(err => {
+            console.warn(err);
+          });
       });
   })
   .parse(process.argv);
