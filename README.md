@@ -2,10 +2,16 @@
 
 Make signed [Zeo](https://github.com/modulesio/zeo) items from a keypair and asset specification.
 
+#### Installation
+
+```
+$ npm i -g zeo-maker
+```
+
 #### Usage
 
 ```
-$ node index.js <assetName> <keysJsonFile> [-d <data>] [-s <skinImgFile>]
+$ zeo-maker <assetName> <keysJsonFile> [-d <data>] [-s <skinImgFile>]
 ```
 
 #### How it works
@@ -19,7 +25,7 @@ $ node index.js <assetName> <keysJsonFile> [-d <data>] [-s <skinImgFile>]
 ```
 $ cat keys.json
 {"privateKey":{"crv":"P-256","d":"BXHWuE1sHVHg1PlZLDqr7mrbD8AnFFXznCds2zJfL_0","ext":true,"key_ops":["sign"],"kty":"EC","x":"S_8irE80Ci5uSTm-tfo4hEuAuNYnzHdDUavcMam-eRg","y":"dVJq5kdkXuKfSoKC7oOcqNkWV2JfHybqd9AGrjuD_zU"},"publicKey":{"crv":"P-256","ext":true,"key_ops":["verify"],"kty":"EC","x":"S_8irE80Ci5uSTm-tfo4hEuAuNYnzHdDUavcMam-eRg","y":"dVJq5kdkXuKfSoKC7oOcqNkWV2JfHybqd9AGrjuD_zU"}}
-$ node index.js ITEM.WOOD keys.json >wood.json
+$ zeo-maker ITEM.WOOD keys.json >wood.json
 $ cat wood.json
 {
   "_zeo_item": true,
@@ -56,7 +62,7 @@ $ cat wood.json
 ```
 $ cat skin.png
 skin.png: PNG image data, 64 x 64, 8-bit/color RGBA, non-interlaced
-$ node index.js ITEM.SKIN keys.json -s skin.png >skin.json
+$ zeo-maker ITEM.SKIN keys.json -s skin.png >skin.json
 $ cat skin.json
 {
   "_zeo_item": true,
