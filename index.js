@@ -91,7 +91,7 @@ program
               assetSpec.json = JSON.parse(program.data);
               return _continue(assetSpec);
             } else if (program.skin) {
-              return _readFile(program.skin, 'hex')
+              return _readFile(program.skin, 'base64')
                 .then(data => {
                   const basename = program.skin.replace(/\.[^.]*$/, '');
 
