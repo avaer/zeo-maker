@@ -75,7 +75,7 @@ program
                 name: 'SHA-256',
               },
             }, privateKey, new Buffer(JSON.stringify(assetSpec), 'utf8'))
-              .then(signature => new Buffer(signature, 'utf8').toString('base64'))
+              .then(signature => new Buffer(signature, 'utf8').toString('hex'))
               .then(signature => {
                 assetSpec.certificate = [
                   {
@@ -91,7 +91,7 @@ program
               assetSpec.json = JSON.parse(program.data);
               return _continue(assetSpec);
             } else if (program.skin) {
-              return _readFile(program.skin, 'base64')
+              return _readFile(program.skin, 'hex')
                 .then(data => {
                   const basename = program.skin.replace(/\.[^.]*$/, '');
 
